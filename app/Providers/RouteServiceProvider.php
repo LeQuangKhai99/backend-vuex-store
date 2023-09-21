@@ -31,12 +31,40 @@ class RouteServiceProvider extends ServiceProvider
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')
-                ->group(base_path('routes/api.php'));
+                ->group(function (){
+                    $this->getUserRoutes();
+                });
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
     }
+
+    private function getUserRoutes()
+    {
+        require base_path('routes/api/auth.php');
+
+        Route::group([
+            'middleware' => ['auth:user'],
+        ], function () {
+            // require base_path('routes/api/profile.php');
+        });
+    }
+
+    // private function getAdminRoutes()
+    // {
+    //     Route::group([
+    //         'prefix' => 'admin',
+    //     ], function () {
+    //         require base_path('routes/api/admin/auth.php');
+
+    //         Route::group([
+    //             'middleware' => ['auth:admin'],
+    //         ], function () {
+    //             require base_path('routes/api/admin/profile.php');
+    //         });
+    //     });
+    // }
 
     /**
      * Configure the rate limiters for the application.

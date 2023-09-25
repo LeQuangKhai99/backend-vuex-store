@@ -34,6 +34,9 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(function (){
                     $this->getUserRoutes();
                 });
+            Route::middleware(['api', 'auth:sanctum'])
+                ->prefix('api/products')
+                ->group(base_path('routes/api/product.php'));
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
@@ -44,11 +47,11 @@ class RouteServiceProvider extends ServiceProvider
     {
         require base_path('routes/api/auth.php');
 
-        Route::group([
-            'middleware' => ['auth:user'],
-        ], function () {
-            // require base_path('routes/api/profile.php');
-        });
+        // Route::prefix('product')->group([
+        //     'middleware' => ['auth:user'],
+        // ], function () {
+        //     require base_path('routes/api/product.php');
+        // });
     }
 
     // private function getAdminRoutes()

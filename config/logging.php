@@ -1,5 +1,7 @@
 <?php
 
+use App\Logging\LoggingDB;
+use App\Logging\SimpleFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -57,6 +59,15 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'db' => [
+            'driver' => 'custom',
+            // 'tab' => [SimpleFormatter::class],
+            // 'table' => 'logs',
+            'via' => LoggingDB::class
+            // 'path' => storage_path('logs/log-daily.log'),
+            // 'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
@@ -85,7 +96,7 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
+                'connectionString' => 'tls://' . env('PAPERTRAIL_URL') . ':' . env('PAPERTRAIL_PORT'),
             ],
         ],
 
